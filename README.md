@@ -1,66 +1,62 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Desafio técnico Amplimed
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Como foi solicitado o arquivo readme informando como eu fiz e o motivo de ter escolhido tal abordagem. Abaixo está detalhado as ferramentas utilizadas.
 
-## About Laravel
+# Projeto de Consulta e Comparação de Previsão do Tempo
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Descrição do Projeto
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Este projeto tem como objetivo fornecer uma interface para consulta de previsão do tempo de diferentes localidades, salvar essas previsões e comparar os dados salvos.
+O projeto foi desenvolvido utilizando React para o frontend e Laravel para o backend, e MySQL como banco de dados.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Tecnologias Utilizadas
 
-## Learning Laravel
+### Frontend
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   **React**: Biblioteca JavaScript para construção de interfaces de usuário.
+-   **TypeScript**: Superconjunto de JavaScript que adiciona tipagem estática e outros recursos.
+-   **Axios**: Biblioteca para fazer requisições HTTP.
+-   **date-fns**: Biblioteca para manipulação e formatação de datas.
+-   **InputMask**: Biblioteca para aplicar máscaras em campos de entrada.
+-   **Bootstrap**: Framework CSS para estilização e layout responsivo.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Backend
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   **Laravel**: Framework PHP para construção de aplicações web robustas e escaláveis.
+-   **MySQL**: Sistema de gerenciamento de banco de dados relacional utilizado para armazenar os dados das previsões.
+-   **HTTP Client**: Ferramenta do Laravel para fazer requisições HTTP.
 
-## Laravel Sponsors
+## Motivação e Decisões de Implementação
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Escolha do React com TypeScript
 
-### Premium Partners
+Decidi utilizar React no frontend devido à sua flexibilidade, eficiência e ampla adoção na comunidade de desenvolvimento. O TypeScript foi escolhido para garantir a tipagem estática e detectar erros durante o desenvolvimento, proporcionando um código mais robusto e fácil de manter.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Axios para Requisições HTTP
 
-## Contributing
+Optamos por usar Axios para lidar com as requisições HTTP devido à sua simplicidade e suporte a recursos avançados, como interceptores e cancelamento de requisições.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### date-fns para Manipulação de Datas
 
-## Code of Conduct
+A biblioteca date-fns foi selecionada para formatação de datas por ser leve, modular e oferecer uma sintaxe simples.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Estrutura do Projeto
 
-## Security Vulnerabilities
+-   **Componentização**: O projeto foi dividido em componentes menores e reutilizáveis, seguindo boas práticas de desenvolvimento com React.
+-   **Uso de Estado**: Utilizamos `useState` e `useEffect` para gerenciar o estado e efeitos colaterais, garantindo que a interface seja reativa às mudanças de dados.
+-   **Controle de Formulários**: Implementamos máscaras de entrada utilizando InputMask para garantir que os dados inseridos pelo usuário sigam o formato correto.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Backend em Laravel
 
-## License
+Laravel foi escolhido para o backend devido à sua robustez, facilidade de uso e integração perfeita com o MySQL. Além disso, Laravel oferece diversos recursos integrados, como roteamento, autenticação e ORM (Eloquent), que facilitam o desenvolvimento de aplicações web.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Considerações Importantes
+
+-   **Validação de Dados**: Implementamos validações de dados tanto no frontend quanto no backend para garantir a integridade e consistência dos dados armazenados.
+-   **UI Responsiva**: Utilizamos Bootstrap para garantir que a interface seja responsiva e adaptável a diferentes tamanhos de tela.
+-   **Histórico de Previsões**: Salvamos o histórico das previsões de tempo para que os usuários possam consultar dados passados e compará-los.
+-   **Comparação de Localidades**: Implementamos uma funcionalidade para comparar previsões de tempo de diferentes localidades, oferecendo uma visão abrangente das condições climáticas.
+
+## Vídeo da aplicação funcionando
+
+![alt text](view.gif)
