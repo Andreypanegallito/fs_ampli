@@ -57,6 +57,8 @@ export default function Welcome({
     const [city, setCity] = useState("");
     const [cityHistory, setCityHistory] = useState("");
     const [weather, setWeather] = useState<Weather | null>(null);
+    const [weather1, setWeather1] = useState<WeatherRecord | null>(null);
+    const [weather2, setWeather2] = useState<WeatherRecord | null>(null);
     const [weatherHistory, setWeatherHistory] = useState<WeatherRecord[]>([]);
     const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
@@ -137,6 +139,22 @@ export default function Welcome({
         };
         return translations[description] || description;
     };
+
+    const setComparing = (record: WeatherRecord) => {
+        if (weather1 == null) {
+            setWeather1(record);
+        } else if (weather1 != null && weather1 == record) {
+            setWeather1(null);
+        }
+
+        if (weather2 == null) {
+            setWeather2(record);
+        } else if (weather2 != null && weather2 == record) {
+            setWeather2(null);
+        }
+
+        alert("Já tem duas previsões do tempo sendo comparadas");
+    }
 
     return (
         <>
@@ -363,17 +381,58 @@ export default function Welcome({
                                                             km/h (
                                                             {record.wind_dir})
                                                         </p>
+                                                        <button onClick={() => setComparing(record)}>Comparar</button>
                                                     </div>
                                                 )}
                                             </div>
                                         ))}
                                     </div>
                                 </div>
+                                <div className="comparison">
+                                    <h2>Comparação de Previsão do Tempo</h2>
+                                    {weather1 &&
+                                        (
+                                            <div className="weather-info">
+                                                <h3>Cidade 1: {weather1.city}</h3>
+                                                <p>Hora da Observação: {weather1.observation_time}</p>
+                                                <p>Temperatura: {weather1.temperature}°C</p>
+                                                <p>Descrição: {translateWeatherDescription(weather1.weather_descriptions[0])}</p>
+                                                <p>Velocidade do Vento: {weather1.wind_speed} km/h</p>
+                                                <p>Direção do Vento: {weather1.wind_dir} ({weather1.wind_degree}°)</p>
+                                                <p>Pressão: {weather1.pressure} hPa</p>
+                                                <p>Precipitação: {weather1.precip} mm</p>
+                                                <p>Umidade: {weather1.humidity}%</p>
+                                                <p>Cobertura de Nuvens: {weather1.cloudcover}%</p>
+                                                <p>Sensação Térmica: {weather1.feelslike}°C</p>
+                                                <p>Índice UV: {weather1.uv_index}</p>
+                                                <p>Visibilidade: {weather1.visibility} km</p>
+                                                <p>É Dia: {weather1.is_day === 'yes' ? 'Sim' : 'Não'}</p>
+                                            </div>
+                                        )}
+                                    {weather2 &&
+                                        (
+                                            <div className="weather-info">
+                                                <h3>Cidade 2: {weather2.city}</h3>
+                                                <p>Hora da Observação: {weather2.observation_time}</p>
+                                                <p>Temperatura: {weather2.temperature}°C</p>
+                                                <p>Descrição: {translateWeatherDescription(weather2.weather_descriptions[0])}</p>
+                                                <p>Velocidade do Vento: {weather2.wind_speed} km/h</p>
+                                                <p>Direção do Vento: {weather2.wind_dir} ({weather2.wind_degree}°)</p>
+                                                <p>Pressão: {weather2.pressure} hPa</p> <p>Precipitação: {weather2.precip} mm</p>
+                                                <p>Umidade: {weather2.humidity}%</p>
+                                                <p>Cobertura de Nuvens: {weather2.cloudcover}%</p>
+                                                <p>Sensação Térmica: {weather2.feelslike}°C</p>
+                                                <p>Índice UV: {weather2.uv_index}</p>
+                                                <p>Visibilidade: {weather2.visibility} km</p>
+                                                <p>É Dia: {weather2.is_day === 'yes' ? 'Sim' : 'Não'}</p>
+                                            </div>
+                                        )}
+                                </div>
                             </div>
                         </main>
                     </div>
-                </div>
-            </div>
+                </div >
+            </div >
         </>
     );
 }
