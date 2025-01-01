@@ -82,6 +82,27 @@
     justify-content: center;
 }
 
+.content-container .content-comparison {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    align-items: center;
+    margin: 10px 30px;
+    flex-direction: column;
+    justify-content: center;
+}
+.content-container .content-comparison .content {
+    display: flex;
+    width: 100%;
+}
+.content-container .content-comparison .content .weather-info {
+    width: 50%;
+}
+.content-container .content-comparison .content .weather-info h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
 .history-list {
 }
 

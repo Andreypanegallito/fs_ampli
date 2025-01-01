@@ -75,8 +75,6 @@ export default function Welcome({
         fetch(`https://viacep.com.br/ws/${cep}/json/`)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                // Atualize o campo de cidade com os dados retornados
                 setCity(data.localidade);
             })
             .catch((error) => {
@@ -88,8 +86,6 @@ export default function Welcome({
         axios
             .post("/weather/fetch", { city })
             .then((response) => {
-                console.log(response);
-                console.log(response.data.current);
                 setWeather(response.data.current);
             })
             .catch((error) => {
@@ -114,7 +110,6 @@ export default function Welcome({
         axios
             .post("/weather/history", { city: cityHistory || "" })
             .then((response) => {
-                console.log(response);
                 setWeatherHistory(response.data);
             })
             .catch((error) => {
@@ -135,26 +130,30 @@ export default function Welcome({
         const translations: { [key: string]: string } = {
             '["Partly cloudy"]': " Parcialmente nublado",
             '["Clear"]': " Limpo",
-            // Adicione outras traduções conforme necessário
+            '["Mist"]': " Névoa",
         };
         return translations[description] || description;
     };
 
     const setComparing = (record: WeatherRecord) => {
-        if (weather1 == null) {
+        if (weather1 == null && weather2 != record) {
             setWeather1(record);
+            return;
         } else if (weather1 != null && weather1 == record) {
             setWeather1(null);
+            return;
         }
 
-        if (weather2 == null) {
+        if (weather2 == null && weather1 != record) {
             setWeather2(record);
+            return;
         } else if (weather2 != null && weather2 == record) {
             setWeather2(null);
+            return;
         }
 
         alert("Já tem duas previsões do tempo sendo comparadas");
-    }
+    };
 
     return (
         <>
@@ -381,58 +380,181 @@ export default function Welcome({
                                                             km/h (
                                                             {record.wind_dir})
                                                         </p>
-                                                        <button onClick={() => setComparing(record)}>Comparar</button>
+                                                        <button
+                                                            onClick={() =>
+                                                                setComparing(
+                                                                    record
+                                                                )
+                                                            }
+                                                        >
+                                                            {weather1 ===
+                                                                record ||
+                                                            weather2 === record
+                                                                ? " Tirar comparação"
+                                                                : " Comparar"}
+                                                        </button>
                                                     </div>
                                                 )}
                                             </div>
                                         ))}
                                     </div>
                                 </div>
-                                <div className="comparison">
-                                    <h2>Comparação de Previsão do Tempo</h2>
-                                    {weather1 &&
-                                        (
-                                            <div className="weather-info">
-                                                <h3>Cidade 1: {weather1.city}</h3>
-                                                <p>Hora da Observação: {weather1.observation_time}</p>
-                                                <p>Temperatura: {weather1.temperature}°C</p>
-                                                <p>Descrição: {translateWeatherDescription(weather1.weather_descriptions[0])}</p>
-                                                <p>Velocidade do Vento: {weather1.wind_speed} km/h</p>
-                                                <p>Direção do Vento: {weather1.wind_dir} ({weather1.wind_degree}°)</p>
-                                                <p>Pressão: {weather1.pressure} hPa</p>
-                                                <p>Precipitação: {weather1.precip} mm</p>
-                                                <p>Umidade: {weather1.humidity}%</p>
-                                                <p>Cobertura de Nuvens: {weather1.cloudcover}%</p>
-                                                <p>Sensação Térmica: {weather1.feelslike}°C</p>
-                                                <p>Índice UV: {weather1.uv_index}</p>
-                                                <p>Visibilidade: {weather1.visibility} km</p>
-                                                <p>É Dia: {weather1.is_day === 'yes' ? 'Sim' : 'Não'}</p>
-                                            </div>
-                                        )}
-                                    {weather2 &&
-                                        (
-                                            <div className="weather-info">
-                                                <h3>Cidade 2: {weather2.city}</h3>
-                                                <p>Hora da Observação: {weather2.observation_time}</p>
-                                                <p>Temperatura: {weather2.temperature}°C</p>
-                                                <p>Descrição: {translateWeatherDescription(weather2.weather_descriptions[0])}</p>
-                                                <p>Velocidade do Vento: {weather2.wind_speed} km/h</p>
-                                                <p>Direção do Vento: {weather2.wind_dir} ({weather2.wind_degree}°)</p>
-                                                <p>Pressão: {weather2.pressure} hPa</p> <p>Precipitação: {weather2.precip} mm</p>
-                                                <p>Umidade: {weather2.humidity}%</p>
-                                                <p>Cobertura de Nuvens: {weather2.cloudcover}%</p>
-                                                <p>Sensação Térmica: {weather2.feelslike}°C</p>
-                                                <p>Índice UV: {weather2.uv_index}</p>
-                                                <p>Visibilidade: {weather2.visibility} km</p>
-                                                <p>É Dia: {weather2.is_day === 'yes' ? 'Sim' : 'Não'}</p>
-                                            </div>
-                                        )}
-                                </div>
+                                {(weather1 || weather2) && (
+                                    <div className=" contents content-comparison bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] md:row-span-3 lg:p-10 lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
+                                        <h2>Comparação de Previsão do Tempo</h2>
+                                        <div className="content">
+                                            {weather1 && (
+                                                <div className="weather-info">
+                                                    <h3>
+                                                        Cidade 1:{" "}
+                                                        {weather1.city}
+                                                    </h3>
+                                                    <p>
+                                                        Hora da Observação:{" "}
+                                                        {formatDate(
+                                                            weather1.created_at
+                                                        )}{" "}
+                                                        {
+                                                            weather1.observation_time
+                                                        }
+                                                    </p>
+                                                    <p>
+                                                        Temperatura:{" "}
+                                                        {weather1.temperature}°C
+                                                    </p>
+                                                    <p>
+                                                        Descrição:
+                                                        {translateWeatherDescription(
+                                                            weather1.weather_descriptions
+                                                        )}
+                                                    </p>
+                                                    <p>
+                                                        Velocidade do Vento:{" "}
+                                                        {weather1.wind_speed}{" "}
+                                                        km/h
+                                                    </p>
+                                                    <p>
+                                                        Direção do Vento:{" "}
+                                                        {weather1.wind_dir} (
+                                                        {weather1.wind_degree}°)
+                                                    </p>
+                                                    <p>
+                                                        Pressão:{" "}
+                                                        {weather1.pressure} hPa
+                                                    </p>
+                                                    <p>
+                                                        Precipitação:{" "}
+                                                        {weather1.precip} mm
+                                                    </p>
+                                                    <p>
+                                                        Umidade:{" "}
+                                                        {weather1.humidity}%
+                                                    </p>
+                                                    <p>
+                                                        Cobertura de Nuvens:{" "}
+                                                        {weather1.cloudcover}%
+                                                    </p>
+                                                    <p>
+                                                        Sensação Térmica:{" "}
+                                                        {weather1.feelslike}°C
+                                                    </p>
+                                                    <p>
+                                                        Índice UV:{" "}
+                                                        {weather1.uv_index}
+                                                    </p>
+                                                    <p>
+                                                        Visibilidade:{" "}
+                                                        {weather1.visibility} km
+                                                    </p>
+                                                    <p>
+                                                        É Dia:
+                                                        {weather1.is_day ===
+                                                        "yes"
+                                                            ? " Sim"
+                                                            : " Não"}
+                                                    </p>
+                                                </div>
+                                            )}
+                                            {weather2 && (
+                                                <div className="weather-info">
+                                                    <h3>
+                                                        Cidade 2:{" "}
+                                                        {weather2.city}
+                                                    </h3>
+                                                    <p>
+                                                        Hora da Observação:{" "}
+                                                        {formatDate(
+                                                            weather2.created_at
+                                                        )}{" "}
+                                                        {
+                                                            weather2.observation_time
+                                                        }
+                                                    </p>
+                                                    <p>
+                                                        Temperatura:{" "}
+                                                        {weather2.temperature}°C
+                                                    </p>
+                                                    <p>
+                                                        Descrição:
+                                                        {translateWeatherDescription(
+                                                            weather2.weather_descriptions
+                                                        )}
+                                                    </p>
+                                                    <p>
+                                                        Velocidade do Vento:{" "}
+                                                        {weather2.wind_speed}{" "}
+                                                        km/h
+                                                    </p>
+                                                    <p>
+                                                        Direção do Vento:{" "}
+                                                        {weather2.wind_dir} (
+                                                        {weather2.wind_degree}°)
+                                                    </p>
+                                                    <p>
+                                                        Pressão:{" "}
+                                                        {weather2.pressure} hPa
+                                                    </p>{" "}
+                                                    <p>
+                                                        Precipitação:{" "}
+                                                        {weather2.precip} mm
+                                                    </p>
+                                                    <p>
+                                                        Umidade:{" "}
+                                                        {weather2.humidity}%
+                                                    </p>
+                                                    <p>
+                                                        Cobertura de Nuvens:{" "}
+                                                        {weather2.cloudcover}%
+                                                    </p>
+                                                    <p>
+                                                        Sensação Térmica:{" "}
+                                                        {weather2.feelslike}°C
+                                                    </p>
+                                                    <p>
+                                                        Índice UV:{" "}
+                                                        {weather2.uv_index}
+                                                    </p>
+                                                    <p>
+                                                        Visibilidade:{" "}
+                                                        {weather2.visibility} km
+                                                    </p>
+                                                    <p>
+                                                        É Dia:{" "}
+                                                        {weather2.is_day ===
+                                                        "yes"
+                                                            ? "Sim"
+                                                            : "Não"}
+                                                    </p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </main>
                     </div>
-                </div >
-            </div >
+                </div>
+            </div>
         </>
     );
 }
